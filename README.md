@@ -1,3 +1,16 @@
+<p align="center">
+  <a href="https://svelte.dev/" target="blank"><img src="https://svelte.dev/favicon.png" alt="Svelte Logo"/></a>
+</p>
+
+# About
+
+[`Live-Chat with SvelteKit and SocketIO`](https://linu.us/live-chat-with-sveltekit-and-socketio)을 참고하여 클론하지 않고 직접 구현한 프로젝트
+
+# Contact
+
+- Name: 신현재(Shin HyunJae)
+- E-Mail: shyunjan@naver.com
+
 # create-svelte
 
 Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
