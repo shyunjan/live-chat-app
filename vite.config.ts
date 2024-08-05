@@ -1,7 +1,7 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig, type ViteDevServer } from 'vite';
-import { Server } from 'socket.io';
 import configureWebSocketServer from './web-socket.config';
+import type http from 'http';
 
 export default defineConfig({
   server: {
@@ -15,7 +15,7 @@ export default defineConfig({
     {
       name: 'socket-io-server',
       configureServer(server: ViteDevServer) {
-        configureWebSocketServer(server.httpServer);
+        configureWebSocketServer(server.httpServer as http.Server);
       }
     }
   ]

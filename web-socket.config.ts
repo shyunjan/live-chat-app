@@ -1,7 +1,7 @@
 import { Server } from 'socket.io';
-import type { HttpServer } from 'vite';
+import type http from 'http';
 
-export default function configureWebSocketServer(server: HttpServer | null) {
+export default function configureWebSocketServer(server: http.Server) {
   const io = new Server(server ?? undefined);
 
   /* 소켓서버에 익명의 클라이언트가 처음 접속했을 때 발생하는 'connection' 이벤트 */
