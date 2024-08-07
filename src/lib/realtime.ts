@@ -1,6 +1,14 @@
-import ioClient from 'socket.io-client';
-const ENDPOINT = 'http://localhost:5172';
+import io from 'socket.io-client';
 
-const socket = ioClient(ENDPOINT);
+let socket = io();
+try {
+  const port = process.env.PORT || 5282;
+  console.debug(`port = ${port}`);
+  const ENDPOINT = `http://localhost:${port}`;
 
-export const io = socket;
+  socket = io(ENDPOINT);
+} catch (error) {
+  console.error(error);
+}
+
+export default socket;

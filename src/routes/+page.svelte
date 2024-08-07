@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { io } from '$lib/realtime';
+  import io from '$lib';
   import { onMount } from 'svelte';
 
   let username = 'username',
