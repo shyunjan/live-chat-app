@@ -1,6 +1,5 @@
 import http from 'http';
 import { Server } from 'socket.io';
-// import fastifySocketIO from 'fastify-socket.io';
 
 /**
  * @param {http.Server<typeof http.IncomingMessage, typeof http.ServerResponse>} server
@@ -8,7 +7,6 @@ import { Server } from 'socket.io';
 export function configureSocketServer(server) {
   const io = new Server(server ?? undefined);
 
-  /* 소켓서버에 익명의 클라이언트가 처음 접속했을 때 발생하는 'connection' 이벤트 */
   addEventListener(io);
 }
 
@@ -28,6 +26,11 @@ export function addEventListener(io) {
         message: message,
         time: new Date().toLocaleString()
       });
+    });
+
+    socket.on('disconnect', () => {
+      console.debug('user disconnected');
+      socket = null;
     });
   });
 

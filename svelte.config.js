@@ -10,11 +10,12 @@ const config = {
   kit: {
     adapter: adapter({
       out: 'build',
-      target: '#svelte',
       precompress: true
       // envPrefix: ''
     })
   },
+
+  target: '#svelte',
 
   vitePlugin: {
     // This enables compile-time warnings to be visible in the learn.svelte.dev editor
