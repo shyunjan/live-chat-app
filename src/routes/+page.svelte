@@ -1,5 +1,5 @@
 <script lang="ts">
-  import io from '$lib';
+  import socket from '$lib';
   import { onMount } from 'svelte';
 
   let username = 'username',
@@ -7,12 +7,24 @@
     messages: { message: string; from: string; time: number }[] = [];
 
   onMount(() => {
-    io.on('message', (message) => {
+    /**
+     * 1. socket.io를 사용하는 경우. 현재 사용하지 않음. 다른 프로젝트에서 사용할 수도 있으므로 남겨둠.
+     **/
+    socket.on('message', (message) => {
       messages = [...messages, message];
     });
-    io.on('name', (name) => {
+    socket.on('name', (name) => {
       username = name;
     });
+    /**
+     * 2. @fastify/websocket을 사용하는 경우
+     **/
+    // socket.addEventListener('message', (event) => {
+    //   messages = [...messages, event.data];
+    // });
+    // socket.addEventListener('name', (event) => {
+    //   username = event.data;
+    // });
   });
 
   function sendMessage() {
@@ -20,7 +32,7 @@
     if (!message) return;
 
     textfield = '';
-    io.emit('message', message);
+    socket.emit('message', message);
   }
 </script>
 
