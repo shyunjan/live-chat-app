@@ -1,14 +1,18 @@
-import { handler } from '../build/handler.js';
 import Fastify from 'fastify';
-import fastifyIO from 'fastify-socket.io';
-import { addEventListener } from '../socket-server.config.js';
+import { handler } from '../build/handler.js';
+import { addSocketIOEventListener } from '../socket-server.config.js';
 
 const app = Fastify({ logger: true });
+console.debug(`process.env.HOST = ${process.env.HOST}`);
 console.debug(`process.env.PORT = ${process.env.PORT}`);
-const port = process.env.PORT || 5282;
 const host = process.env.HOST || 'localhost';
+const port = process.env.PORT || 5282;
 
-app.register(fastifyIO);
+/**
+ * 1. fastify-socket.io를 사용하는 경우. 현재 사용하지 않음. 사유는 아래 2번 참조.
+ * 다른 프로젝트에서 사용할 수도 있으므로 남겨둠.
+ **/
+app.register((await import('fastify-socket.io')).default);
 
 /**
  * 출처: https://stackoverflow.com/questions/72317071/how-to-set-up-fastify-correctly-so-that-sveltekit-works-fine
@@ -16,12 +20,30 @@ app.register(fastifyIO);
  **/
 // app.removeAllContentTypeParsers();
 // app.addContentTypeParser('*', (req, payload, done) => done(null, null));
-app.all('/*', (req, res) => handler(req.raw, res.raw, () => {}));
+app.all('/*', (req, reply) => {
+  // reply.header('Access-Control-Allow-Origin', '*');
+  // reply.header('Access-Control-Allow-Headers', '*');
+  // reply.header("Access-Control-Allow-Methods", "GET");
+  return handler(req.raw, reply.raw, () => {});
+});
 
 app.ready((err) => {
   if (err) throw err;
-  addEventListener(app.io);
+  addSocketIOEventListener(app.io);
 });
+
+/**
+ * 2. @fastify/websocket을 사용하는 경우
+ * 사유: https://stackoverflow.com/questions/77049816/fastify-socket-io-server-client-doesnt-connect
+ **/
+// app.register(require('@fastify/websocket')).after(() => {
+//   app.all('/*', {
+//     handler: async (req, reply) => handler(req.raw, reply.raw, () => {}),
+//     wsHandler: (socket /* WebSocket */, req /* FastifyRequest */) => {
+//       addEventListener(socket);
+//     }
+//   });
+// });
 
 app.listen({ port, host }, (err) => {
   if (err) {
