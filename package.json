@@ -20,6 +20,7 @@
     "@sveltejs/vite-plugin-svelte": "^3.0.0",
     "@tailwindcss/typography": "^0.5.13",
     "@types/eslint": "^9.6.0",
+    "@types/ws": "^8.5.12",
     "autoprefixer": "^10.4.19",
     "eslint": "^9.0.0",
     "eslint-config-prettier": "^9.1.0",
@@ -41,6 +42,7 @@
     "fastify": "^4.28.1",
     "fastify-socket.io": "^5.0.0",
     "socket.io": "^4.7.5",
-    "socket.io-client": "^4.7.5"
+    "socket.io-client": "^4.7.5",
+    "ws": "^8.18.0"
   }
 }
