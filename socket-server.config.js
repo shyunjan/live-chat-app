@@ -1,6 +1,6 @@
 import http from 'http';
 import { Server } from 'socket.io';
-import WebSocket, { WebSocketServer } from 'ws';
+import { WebSocketServer } from 'ws';
 
 /**
  * @param {http.Server<typeof http.IncomingMessage, typeof http.ServerResponse>} server
@@ -8,15 +8,6 @@ import WebSocket, { WebSocketServer } from 'ws';
 export function configureSocketIOServer(server) {
   const io = new Server(server ?? undefined);
   addSocketIOEventListener(io);
-}
-
-/**
- * @param {WebSocket.ServerOptions<typeof WebSocket, typeof http.IncomingMessage> | undefined} server
- */
-export function configureWebSocketServer(server) {
-  // const ws = new WebSocket(`ws://${process.env.HOST}:${process.env.PORT}`);
-  const wss = new WebSocketServer(server);
-  addWebSocketEventListener(wss);
 }
 
 /**
@@ -47,21 +38,37 @@ export function addSocketIOEventListener(socket) {
 }
 
 /**
- * @param {WebSocket.Server} wss
+ * @param {number} port
+ */
+export function configureWebSocketServer(port) {
+  // * WebSocket은 ws:// 프로토콜을 사용하기 때문에 웹서버 포트와 다른 포트번호를 사용해야 함
+  const wss = new WebSocketServer({ port });
+  addWebSocketEventListener(wss);
+}
+
+/**
+ * @param {WebSocketServer} wss
  */
 export function addWebSocketEventListener(wss) {
   /* 소켓서버에 익명의 클라이언트가 처음 접속했을 때 발생하는 'connection' 이벤트 */
   wss.on('connection', (ws) => {
     const username = `User ${Math.round(Math.random() * 999999)}`; // 새로운 유저명을 생성해서 클라이언트에 발송
-    ws.emit('name', username);
+    // ws.emit('name', username);
+    ws.send(JSON.stringify({ event: 'name', payload: username }));
 
     /* 이 클라이언트 소켓(ws)으로부터 어떤 메시지를 전송받는 이벤트('message')가 발생되면, 이 서버에 연결된 모든 소켓에 해당 메시지를 일괄 발송 */
     ws.on('message', (message) => {
-      ws.emit('message', {
-        from: username,
-        message: message,
-        time: new Date().toLocaleString()
-      });
+      // ws.emit('message', {
+      //   from: username,
+      //   message: message,
+      //   time: new Date().toLocaleString()
+      // });
+      ws.send(
+        JSON.stringify({
+          event: 'message',
+          payload: { from: username, message: message, time: new Date().toLocaleString() }
+        })
+      );
     });
 
     ws.on('disconnect', () => {

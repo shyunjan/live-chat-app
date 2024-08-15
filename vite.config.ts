@@ -1,23 +1,24 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig, loadEnv, type ViteDevServer } from 'vite';
-import { configureSocketIOServer } from './socket-server.config';
+import { configureSocketIOServer, configureWebSocketServer } from './socket-server.config';
 import type http from 'http';
 
 export default defineConfig(({ command, mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
   return {
     server: {
-      port: 5282
+      port: Number(env.PORT)
     },
     preview: {
-      port: 5282
+      port: Number(env.PORT)
     },
     plugins: [
       sveltekit(),
       {
         name: 'socket-io-server',
         configureServer(server: ViteDevServer) {
-          configureSocketIOServer(server.httpServer as http.Server);
+          // configureSocketIOServer(server.httpServer as http.Server);
+          configureWebSocketServer(Number(env.SOCKET_PORT));
         }
       }
     ],

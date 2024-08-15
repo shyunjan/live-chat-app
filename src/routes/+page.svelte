@@ -10,21 +10,30 @@
     /**
      * 1. socket.io를 사용하는 경우. 현재 사용하지 않음. 다른 프로젝트에서 사용할 수도 있으므로 남겨둠.
      **/
-    socket.on('message', (message) => {
-      messages = [...messages, message];
-    });
-    socket.on('name', (name) => {
-      username = name;
-    });
+    // socket.on('name', (name) => {
+    //   username = name;
+    // });
+    // socket.on('message', (message) => {
+    //   messages = [...messages, message];
+    // });
     /**
-     * 2. @fastify/websocket을 사용하는 경우
+     * 2. websocket을 사용하는 경우
      **/
-    // socket.addEventListener('message', (event) => {
-    //   messages = [...messages, event.data];
-    // });
-    // socket.addEventListener('name', (event) => {
-    //   username = event.data;
-    // });
+    socket.onmessage = (message) => {
+      console.debug(`message.type = ${message.type}`);
+      console.debug(`message.data = ${message.data}`);
+      const data = JSON.parse(message.data);
+      const eventType = data.event;
+      const payload = data.payload;
+      console.debug(`eventType = ${eventType}`);
+      console.debug(`payload = ${payload}`);
+
+      if (eventType === 'name') {
+        username = payload;
+      } else if (eventType === 'message') {
+        messages = [...messages, payload];
+      }
+    };
   });
 
   function sendMessage() {
@@ -32,7 +41,8 @@
     if (!message) return;
 
     textfield = '';
-    socket.emit('message', message);
+    // socket.emit('message', message);
+    socket.send(message);
   }
 </script>
 
