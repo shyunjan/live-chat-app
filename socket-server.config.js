@@ -57,16 +57,13 @@ export function addWebSocketEventListener(wss) {
     ws.send(JSON.stringify({ event: 'name', payload: username }));
 
     /* 이 클라이언트 소켓(ws)으로부터 어떤 메시지를 전송받는 이벤트('message')가 발생되면, 이 서버에 연결된 모든 소켓에 해당 메시지를 일괄 발송 */
-    ws.on('message', (message) => {
-      // ws.emit('message', {
-      //   from: username,
-      //   message: message,
-      //   time: new Date().toLocaleString()
-      // });
+    ws.on('message', (data, isBinary) => {
+      /* WebSocket에서는 string을 data로 받으면 isBinary가 false가 되고 {"type":"Buffer","data":number[]} 형태로 data가 들어온다 */
+      const message = isBinary ? data : data.toString();
       ws.send(
         JSON.stringify({
           event: 'message',
-          payload: { from: username, message: message, time: new Date().toLocaleString() }
+          payload: { from: username, message, time: new Date().toLocaleString() }
         })
       );
     });

@@ -1,6 +1,8 @@
 <script lang="ts">
-  import socket from '$lib';
+  import { SOCKET_SERVER_ENDPOINT } from '$lib';
   import { onMount } from 'svelte';
+
+  const socket = new WebSocket(`ws://${SOCKET_SERVER_ENDPOINT}`);
 
   let username = 'username',
     textfield = '',
@@ -19,14 +21,11 @@
     /**
      * 2. websocket을 사용하는 경우
      **/
-    socket.onmessage = (message) => {
-      console.debug(`message.type = ${message.type}`);
-      console.debug(`message.data = ${message.data}`);
-      const data = JSON.parse(message.data);
+
+    socket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
       const eventType = data.event;
       const payload = data.payload;
-      console.debug(`eventType = ${eventType}`);
-      console.debug(`payload = ${payload}`);
 
       if (eventType === 'name') {
         username = payload;
