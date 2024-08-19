@@ -4,48 +4,20 @@
 
 # About
 
-[`Live-Chat with SvelteKit and SocketIO`](https://linu.us/live-chat-with-sveltekit-and-socketio)을 참고하여 클론하지 않고 직접 구현한 프로젝트
+[`Live-Chat with SvelteKit and SocketIO`](https://linu.us/live-chat-with-sveltekit-and-socketio)을 참고하여 클론하지 않고 직접 구현한 프로젝트.  
+그러나 [WebSocket](https://www.npmjs.com/package/ws)과 [SocketIO](https://www.npmjs.com/package/socket.io)를 모두 사용할 수 있도록 코딩되었으나, 현재는 SocketIO 부분은 주석처리 되어있고 WebSocket만 사용하도록 되어있다.
+
+# Technology
+
+- Svelte
+- SvelteKit
+- WebSocket
+- SocketIO
+- Fastify
+- TailwindCSS
+- Vite
 
 # Contact
 
 - Name: 신현재(Shin HyunJae)
 - E-Mail: shyunjan@naver.com
-
-# create-svelte
-
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
-
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
-
-```bash
-# create a new project in the current directory
-npm create svelte@latest
-
-# create a new project in my-app
-npm create svelte@latest my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
