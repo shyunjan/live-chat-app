@@ -1,6 +1,8 @@
 <script lang="ts">
-  import socket from '$lib';
+  import { SOCKET_SERVER_ENDPOINT } from '$lib';
   import { onMount } from 'svelte';
+
+  const socket = new WebSocket(`ws://${SOCKET_SERVER_ENDPOINT}`); // Websocket을 사용하는 경우
 
   let username = 'username',
     textfield = '',
@@ -10,21 +12,26 @@
     /**
      * 1. socket.io를 사용하는 경우. 현재 사용하지 않음. 다른 프로젝트에서 사용할 수도 있으므로 남겨둠.
      **/
-    socket.on('message', (message) => {
-      messages = [...messages, message];
-    });
-    socket.on('name', (name) => {
-      username = name;
-    });
+    // socket.on('name', (name) => {
+    //   username = name;
+    // });
+    // socket.on('message', (message) => {
+    //   messages = [...messages, message];
+    // });
     /**
-     * 2. @fastify/websocket을 사용하는 경우
+     * 2. Websocket을 사용하는 경우
      **/
-    // socket.addEventListener('message', (event) => {
-    //   messages = [...messages, event.data];
-    // });
-    // socket.addEventListener('name', (event) => {
-    //   username = event.data;
-    // });
+    socket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      const eventType = data.event;
+      const payload = data.payload;
+
+      if (eventType === 'name') {
+        username = payload;
+      } else if (eventType === 'message') {
+        messages = [...messages, payload];
+      }
+    };
   });
 
   function sendMessage() {
@@ -32,7 +39,8 @@
     if (!message) return;
 
     textfield = '';
-    socket.emit('message', message);
+    // socket.emit('message', message); // socket.io를 사용하는 경우
+    socket.send(message); // Websocket을 사용하는 경우
   }
 </script>
 
