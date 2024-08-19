@@ -2,7 +2,7 @@
   import { SOCKET_SERVER_ENDPOINT } from '$lib';
   import { onMount } from 'svelte';
 
-  const socket = new WebSocket(`ws://${SOCKET_SERVER_ENDPOINT}`);
+  const socket = new WebSocket(`ws://${SOCKET_SERVER_ENDPOINT}`); // Websocket을 사용하는 경우
 
   let username = 'username',
     textfield = '',
@@ -19,9 +19,8 @@
     //   messages = [...messages, message];
     // });
     /**
-     * 2. websocket을 사용하는 경우
+     * 2. Websocket을 사용하는 경우
      **/
-
     socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
       const eventType = data.event;
@@ -40,8 +39,8 @@
     if (!message) return;
 
     textfield = '';
-    // socket.emit('message', message);
-    socket.send(message);
+    // socket.emit('message', message); // socket.io를 사용하는 경우
+    socket.send(message); // Websocket을 사용하는 경우
   }
 </script>
 

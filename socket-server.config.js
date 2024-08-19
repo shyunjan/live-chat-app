@@ -1,6 +1,6 @@
 import http from 'http';
 import { Server } from 'socket.io';
-import { WebSocketServer } from 'ws';
+import WebSocket, { WebSocketServer } from 'ws';
 
 /**
  * @param {http.Server<typeof http.IncomingMessage, typeof http.ServerResponse>} server
@@ -60,12 +60,16 @@ export function addWebSocketEventListener(wss) {
     ws.on('message', (data, isBinary) => {
       /* WebSocket에서는 string을 data로 받으면 isBinary가 false가 되고 {"type":"Buffer","data":number[]} 형태로 data가 들어온다 */
       const message = isBinary ? data : data.toString();
-      ws.send(
-        JSON.stringify({
-          event: 'message',
-          payload: { from: username, message, time: new Date().toLocaleString() }
-        })
-      );
+
+      wss.clients.forEach((client) => {
+        if (client.readyState === WebSocket.OPEN)
+          client.send(
+            JSON.stringify({
+              event: 'message',
+              payload: { from: username, message, time: new Date().toLocaleString() }
+            })
+          );
+      });
     });
 
     ws.on('disconnect', () => {
