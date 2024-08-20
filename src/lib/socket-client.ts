@@ -8,7 +8,7 @@
  *
  **/
 const host = process.env.HOST || 'localhost';
-const port = process.env.PORT || 5282;
+// const port = process.env.PORT || 5282;
 const socketPort = process.env.SOCKET_PORT || 5283;
 export const SOCKET_SERVER_ENDPOINT = `${host}:${socketPort}`;
 console.debug(`SOCKET_SERVER_ENDPOINT = ${SOCKET_SERVER_ENDPOINT}`);
