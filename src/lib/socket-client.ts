@@ -8,13 +8,13 @@
  *
  **/
 const host = process.env.HOST || 'localhost';
-const port = process.env.PORT || 5282;
+// const port = process.env.PORT || 5282;
 const socketPort = process.env.SOCKET_PORT || 5283;
 export const SOCKET_SERVER_ENDPOINT = `${host}:${socketPort}`;
 console.debug(`SOCKET_SERVER_ENDPOINT = ${SOCKET_SERVER_ENDPOINT}`);
 
 /**
- * 1. socket.io를 사용하는 경우. 현재 사용하지 않음. 사유는 아래 2번 참조.
+ * 1. Socket.IO를 사용하는 경우. 현재 사용하지 않음. 사유는 아래 2번 참조.
  * 다른 프로젝트에서 사용할 수도 있으므로 남겨둠.
  **/
 // import { io } from 'socket.io-client';

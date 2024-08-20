@@ -10,7 +10,7 @@
 
   onMount(() => {
     /**
-     * 1. socket.io를 사용하는 경우. 현재 사용하지 않음. 다른 프로젝트에서 사용할 수도 있으므로 남겨둠.
+     * 1. Socket.io를 사용하는 경우. 현재 사용하지 않음. 다른 프로젝트에서 사용할 수도 있으므로 남겨둠.
      **/
     // socket.on('name', (name) => {
     //   username = name;
@@ -19,7 +19,7 @@
     //   messages = [...messages, message];
     // });
     /**
-     * 2. Websocket을 사용하는 경우
+     * 2. WebSocket을 사용하는 경우
      **/
     socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
@@ -39,8 +39,8 @@
     if (!message) return;
 
     textfield = '';
-    // socket.emit('message', message); // socket.io를 사용하는 경우
-    socket.send(message); // Websocket을 사용하는 경우
+    // socket.emit('message', message); // Socket.IO를 사용하는 경우
+    socket.send(message); // WebSocket을 사용하는 경우
   }
 </script>
 

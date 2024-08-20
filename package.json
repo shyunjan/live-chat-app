@@ -38,11 +38,7 @@
     "vite": "^5.0.3"
   },
   "dependencies": {
-    "@fastify/websocket": "^10.0.1",
     "fastify": "^4.28.1",
-    "fastify-socket.io": "^5.0.0",
-    "socket.io": "^4.7.5",
-    "socket.io-client": "^4.7.5",
     "ws": "^8.18.0"
   }
 }
